@@ -27,6 +27,7 @@
     --space-5: 24px;
     --space-6: 32px;
     --radius: 8px;
+    --shadow: 0 1px 2px rgba(1, 20, 44, 0.06), 0 4px 12px rgba(1, 20, 44, 0.06);   /* subtle card shadow */
     --page: 640px;
 }
 
@@ -55,7 +56,7 @@ body {
 main {
     max-width: var(--page);
     margin: 0 auto;
-    padding: var(--space-5) var(--space-4) var(--space-6);
+    padding: var(--space-6) var(--space-4) var(--space-6);
 }
 
 h1,
@@ -72,7 +73,7 @@ h1 {
 }
 
 h2 {
-    margin: var(--space-6) 0 var(--space-3);
+    margin: var(--space-6) 0 var(--space-4);
     font-size: 1.35rem;
 }
 
@@ -185,7 +186,8 @@ form {
 
 #offer-form,
 fieldset {
-    padding: var(--space-4);
+    padding: var(--space-5);
+    box-shadow: var(--shadow);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--surface);
@@ -304,6 +306,7 @@ button:disabled {
 
 table {
     width: 100%;
+    box-shadow: var(--shadow);
     border-collapse: separate;
     border-spacing: 0;
     border: 1px solid var(--line);
@@ -390,6 +393,7 @@ legend {
 }
 
 .offer-result {
+    box-shadow: var(--shadow);
     min-width: 0;
     padding: var(--space-4);
     border: 1px solid var(--line);
@@ -462,6 +466,7 @@ legend {
 }
 
 .breakdown {
+    box-shadow: var(--shadow);
     margin-bottom: var(--space-2);
     border: 1px solid var(--line);
     border-radius: var(--radius);
@@ -547,10 +552,84 @@ legend {
     }
 }
 
+/* ---- Where your paycheck goes (index.html) ---- */
+/* Segment colors vs the white card: navy 18.5:1, slate 4.5:1, logo teal 3.8:1 (all above the 3:1
+   needed for graphics). White gaps keep neighbouring segments apart, and the legend labels every
+   segment in text, so color is never the only cue. */
+.paybar {
+    margin: 0 0 var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.paybar h3 {
+    margin: 0;
+}
+
+.paybar-gross {
+    margin: var(--space-1) 0 var(--space-3);
+}
+
+.paybar-track {
+    display: flex;
+    gap: 2px;
+    height: 28px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--surface);
+}
+
+.paybar-seg {
+    min-width: 4px;          /* a tiny share stays visible */
+}
+
+.seg-net {
+    background: var(--navy);
+}
+
+.seg-tax {
+    background: var(--input-line);
+}
+
+.seg-401k {
+    background: var(--accent);
+}
+
+.paybar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.paybar-legend li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-variant-numeric: tabular-nums;
+}
+
+.paybar-legend strong {
+    color: var(--navy);
+}
+
+.swatch {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+}
+
 /* ---- What-if sliders (index.html) ---- */
 .whatif {
+    box-shadow: var(--shadow);
     margin: var(--space-4) 0 var(--space-5);
-    padding: var(--space-4);
+    padding: var(--space-5);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--surface);
@@ -625,6 +704,7 @@ input[type="range"] {
 }
 
 .explain-box {
+    box-shadow: var(--shadow);
     margin-top: var(--space-3);
     padding: var(--space-4);
     border: 1px solid var(--line);
@@ -658,6 +738,10 @@ input[type="range"] {
 }
 
 @media (max-width: 480px) {
+    .paybar-legend {
+        flex-direction: column;
+    }
+
     .brand img {
         height: 60px;
     }

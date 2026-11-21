@@ -18,10 +18,39 @@ async function getEstimate(offer) {
     return postJSON("/estimate", offer);
 }
 
+// "Where your paycheck goes" bar. Every amount is from the API response: taxes are the API's
+// tax and NJ deduction line items added together, and each share is that amount over the API's gross.
+const TAX_KEYS = Object.keys(LABELS).filter((k) => k !== "pre_tax_401k");
+
+function renderPaybar(data) {
+    const p = data.per_paycheck;
+    const parts = [
+        { key: "net", label: "take-home", amount: p.net },
+        { key: "tax", label: "taxes", amount: Math.round(TAX_KEYS.reduce((sum, k) => sum + p[k], 0) * 100) / 100 },
+        { key: "401k", label: "401(k)", amount: p.pre_tax_401k },
+    ];
+    const pct = (amount) => (p.gross > 0 ? (amount / p.gross) * 100 : 0);
+
+    for (const part of parts) {
+        const seg = el(`seg-${part.key}`);
+        seg.style.width = `${pct(part.amount)}%`;
+        seg.hidden = part.amount <= 0;
+        el(`leg-${part.key}`).textContent = `${money(part.amount)} (${Math.round(pct(part.amount))}%)`;
+    }
+    el("leg-401k-item").hidden = p.pre_tax_401k <= 0;
+    el("paybar-gross").textContent = `Out of ${money(p.gross)} per paycheck before taxes.`;
+
+    const shown = parts.filter((part) => part.amount > 0)
+        .map((part) => `${money(part.amount)} ${part.label} (${Math.round(pct(part.amount))}%)`);
+    el("paybar-track").setAttribute("aria-label",
+        `Bar chart of your ${money(p.gross)} paycheck: ${shown.join(", ")}.`);
+}
+
 function show(data) {
     latest = data;
     clearExplanation();    // an old explanation would describe different numbers
     el("net").textContent = money(data.per_paycheck.net);
+    renderPaybar(data);
     renderRows(el("rows"), data);
     renderNotes(el("notes"), data.notes);
     el("results").hidden = false;

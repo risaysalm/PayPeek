@@ -52,6 +52,23 @@
             <h2 id="results-heading">Your paycheck</h2>
             <p class="net">Take-home per paycheck: <strong id="net"></strong></p>
 
+            <!-- Shares of gross pay from the API response. The bar is one image for screen readers
+                 (its label lists every amount); the legend shows the same amounts as text. -->
+            <section class="paybar" aria-labelledby="paybar-heading">
+                <h3 id="paybar-heading">Where your paycheck goes</h3>
+                <p class="note paybar-gross" id="paybar-gross"></p>
+                <div class="paybar-track" id="paybar-track" role="img">
+                    <span class="paybar-seg seg-net" id="seg-net"></span>
+                    <span class="paybar-seg seg-tax" id="seg-tax"></span>
+                    <span class="paybar-seg seg-401k" id="seg-401k"></span>
+                </div>
+                <ul class="paybar-legend">
+                    <li><span class="swatch seg-net" aria-hidden="true"></span><span class="legend-label">Take-home</span> <strong id="leg-net"></strong></li>
+                    <li><span class="swatch seg-tax" aria-hidden="true"></span><span class="legend-label">Taxes</span> <strong id="leg-tax"></strong></li>
+                    <li id="leg-401k-item"><span class="swatch seg-401k" aria-hidden="true"></span><span class="legend-label">401(k)</span> <strong id="leg-401k"></strong></li>
+                </ul>
+            </section>
+
             <section id="whatif" class="whatif" aria-labelledby="whatif-heading" hidden>
                 <h3 id="whatif-heading">Try a change</h3>
                 <p class="note">Drag a slider or type a number to see how your paycheck would change, without retyping your offer.</p>
