@@ -12,10 +12,11 @@
     <main>
         <h1>PayPeek</h1>
         <p class="tagline">See what you'll actually take home.</p>
+        <p><a href="compare.html">Compare two job offers</a></p>
 
         <form id="offer-form">
             <label for="salary">Annual salary ($)</label>
-            <input id="salary" type="number" min="0" step="1000" required>
+            <input id="salary" type="number" min="1" step="1" inputmode="numeric" required>
 
             <label for="frequency">How often you're paid</label>
             <select id="frequency">
@@ -31,9 +32,39 @@
 
         <p id="error" role="alert"></p>
 
-        <section id="results" aria-live="polite" hidden>
-            <h2>Your paycheck</h2>
+        <!-- Short spoken updates; the results section itself isn't live so tables aren't re-read. -->
+        <p id="status" class="visually-hidden" role="status"></p>
+
+        <section id="results" aria-labelledby="results-heading" hidden>
+            <h2 id="results-heading">Your paycheck</h2>
             <p class="net">Take-home per paycheck: <strong id="net"></strong></p>
+
+            <section id="whatif" class="whatif" aria-labelledby="whatif-heading" hidden>
+                <h3 id="whatif-heading">What if?</h3>
+                <p class="note">Move a slider to see how your paycheck would change. Use the arrow keys to move one step at a time.</p>
+
+                <div class="slider">
+                    <div class="slider-label">
+                        <label for="whatif-k401">401(k) contribution</label>
+                        <output id="whatif-k401-out" for="whatif-k401"></output>
+                    </div>
+                    <input id="whatif-k401" type="range" min="0" max="15" step="1">
+                    <div class="slider-range" aria-hidden="true"><span>0%</span><span id="whatif-k401-max">15%</span></div>
+                </div>
+
+                <div class="slider">
+                    <div class="slider-label">
+                        <label for="whatif-salary">Annual salary</label>
+                        <output id="whatif-salary-out" for="whatif-salary"></output>
+                    </div>
+                    <input id="whatif-salary" type="range" step="1000">
+                    <div class="slider-range" aria-hidden="true"><span id="whatif-salary-min"></span><span id="whatif-salary-max"></span></div>
+                </div>
+
+                <button type="button" id="whatif-reset">Reset</button>
+                <p id="whatif-summary" class="summary" role="status"></p>
+            </section>
+
             <table>
                 <thead>
                     <tr>
@@ -44,9 +75,20 @@
                 </thead>
                 <tbody id="rows"></tbody>
             </table>
+            <ul id="notes" class="notes" aria-label="Notes" hidden></ul>
+
+            <div class="explain">
+                <button type="button" id="explain-btn" aria-controls="explain-box">Explain my paycheck</button>
+                <p id="explain-status" class="explain-status" role="status"></p>
+                <div id="explain-box" class="explain-box" hidden>
+                    <p id="explain-source" class="explain-source"></p>
+                    <p id="explain-text" class="explain-text"></p>
+                </div>
+            </div>
             <p class="note">Estimate only, not tax advice. Based on 2026 federal and New Jersey rules.</p>
         </section>
     </main>
+    <script src="common.js"></script>
     <script src="app.js"></script>
 </body>
 
