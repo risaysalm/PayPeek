@@ -6,7 +6,7 @@
 
 **See your real take-home pay.**
 
-- **Live demo:** [PASTE NETLIFY LINK]
+- **Live demo:** https://thepaypeek.netlify.app/
 - **Backend API:** https://paypeek-api.onrender.com (interactive docs at `/docs`)
 
 > The backend runs on a free Render plan. The first load may take up to a minute while it wakes up.
@@ -79,8 +79,8 @@ python -m pytest -q
 
 ## Team
 
-- **Risay Shebeer Salam** ([@risaysalm](https://github.com/risaysalm)): backend tax engine, API and tests
-- **Hamdaan** ([@hmalik0](https://github.com/hmalik0)): frontend, design and accessibility
+- **Hamdaan** ([@hmalik0](https://github.com/hmalik0)): frontend and design
+- **Risay Shebeer Salam** ([@risaysalm](https://github.com/risaysalm)): backend and tax engine
 
 We used Claude Code to help build PayPeek.
 
