@@ -29,12 +29,20 @@ filer, biweekly pay.
 Backend (terminal 1), runs at http://localhost:8000:
 ```
 cd backend
-source ../.venv/bin/activate        # Windows PowerShell: ..\.venv\Scripts\Activate.ps1
+source ../.venv/bin/activate
 python -m pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
 ```
 
 Tests (from backend/, venv active): `python -m pytest -q`
+
+On Windows PowerShell, skip activation (Windows blocks Activate.ps1 by
+default) and call the venv's Python directly, from backend/:
+```
+..\.venv\Scripts\python -m pip install -r requirements.txt
+..\.venv\Scripts\python -m uvicorn app.main:app --reload
+..\.venv\Scripts\python -m pytest -q
+```
 
 Frontend (terminal 2), open http://localhost:5500:
 ```

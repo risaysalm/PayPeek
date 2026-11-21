@@ -27,6 +27,15 @@ PAYPEEK_MOCK=1 uvicorn app.main:app    # every /estimate returns the mock
 pytest -q
 ```
 
+Windows PowerShell, from `backend/` (no activation needed):
+```powershell
+..\.venv\Scripts\python -m pip install -r requirements.txt
+..\.venv\Scripts\python -m uvicorn app.main:app --reload
+$env:PAYPEEK_MOCK = "1"; ..\.venv\Scripts\python -m uvicorn app.main:app   # mock mode
+..\.venv\Scripts\python -m pytest -q
+```
+Mock mode stays on in that window until you run `Remove-Item Env:PAYPEEK_MOCK`.
+
 ## Mock for the frontend
 `POST /estimate?mock=true` with any body like `{"annual_salary": 70000}` returns `app/mock.py`.
 Its numbers are test case 1, and `test_api.py` checks that they still match the real engine.
