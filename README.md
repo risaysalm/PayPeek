@@ -39,6 +39,8 @@ A salary isn't what lands in your account. A $70,000 offer doesn't pay $2,692 ev
 - **Frontend (plain HTML, CSS and JavaScript):** only displays what the API returns. It never calculates taxes.
 - **Explanations:** written only from the engine's results, using a fixed template. They never recalculate taxes.
 
+More detail: [backend/README.md](backend/README.md) and [frontend/README.md](frontend/README.md).
+
 ## Scope and limits
 
 - 2026 rules, federal plus New Jersey
