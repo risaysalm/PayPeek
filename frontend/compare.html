@@ -23,11 +23,11 @@
     </header>
     <main>
         <h1>Compare job offers</h1>
-        <p class="lede">See which offer actually leaves more in your paycheck. Start with two, and add up to four.</p>
+        <p class="lede">See which offer actually leaves more in your paycheck. Start with two, and add up to ten.</p>
 
         <form id="compare-form">
-            <!-- Offers C and D stay hidden and disabled (so they skip validation) until added. -->
-            <div class="offers" id="offer-inputs" data-count="2">
+            <!-- Offers C to J are added here by compare.js; hidden ones are disabled so they skip validation. -->
+            <div class="offers" id="offer-inputs">
                 <fieldset>
                     <legend>Offer A</legend>
                     <label for="a-salary">Offer A annual salary ($)</label>
@@ -45,32 +45,12 @@
                     <label for="b-k401">Offer B 401(k) contribution (%)</label>
                     <input id="b-k401" type="number" min="0" max="100" step="0.5" value="0" placeholder="e.g. 5" required>
                 </fieldset>
-
-                <fieldset id="c-fieldset" hidden disabled>
-                    <legend>Offer C</legend>
-                    <label for="c-salary">Offer C annual salary ($)</label>
-                    <input id="c-salary" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 72000" required>
-
-                    <label for="c-k401">Offer C 401(k) contribution (%)</label>
-                    <input id="c-k401" type="number" min="0" max="100" step="0.5" value="0" placeholder="e.g. 5" required>
-                    <button type="button" class="remove-offer" data-offer="c">Remove<span class="visually-hidden"> Offer C</span></button>
-                </fieldset>
-
-                <fieldset id="d-fieldset" hidden disabled>
-                    <legend>Offer D</legend>
-                    <label for="d-salary">Offer D annual salary ($)</label>
-                    <input id="d-salary" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 72000" required>
-
-                    <label for="d-k401">Offer D 401(k) contribution (%)</label>
-                    <input id="d-k401" type="number" min="0" max="100" step="0.5" value="0" placeholder="e.g. 5" required>
-                    <button type="button" class="remove-offer" data-offer="d">Remove<span class="visually-hidden"> Offer D</span></button>
-                </fieldset>
             </div>
 
             <!-- Remembered with the other values (common.js), so the number of offers survives page switches. -->
             <input type="hidden" id="offer-count" value="2">
-            <button type="button" id="add-offer" class="add-offer">Add another offer</button>
-            <p id="offer-limit" class="note" hidden>You can compare up to 4 offers.</p>
+            <button type="button" id="add-offer" class="add-offer" aria-describedby="offer-limit">Add another offer</button>
+            <p id="offer-limit" class="note">You can compare up to 10 offers.</p>
             <p id="offer-status" class="visually-hidden" role="status"></p>
 
             <p class="note">All offers use 2026 New Jersey rules, a single filer, and pay every two weeks.</p>
@@ -88,7 +68,7 @@
 
         <section id="results" aria-labelledby="results-heading" hidden>
             <h2 id="results-heading">Side by side</h2>
-            <div class="offers" id="offer-results" data-count="2">
+            <div class="offers" id="offer-results">
                 <article class="offer-result" id="a-result" aria-labelledby="a-heading">
                     <h3 id="a-heading">Offer A</h3>
                     <p class="net">Take-home per paycheck: <strong id="a-net"></strong></p>
@@ -122,41 +102,31 @@
                     </table>
                     <ul id="b-notes" class="notes" aria-label="Offer B notes" hidden></ul>
                 </article>
-
-                <article class="offer-result" id="c-result" aria-labelledby="c-heading" hidden>
-                    <h3 id="c-heading">Offer C</h3>
-                    <p class="net">Take-home per paycheck: <strong id="c-net"></strong></p>
-                    <table>
-                        <caption class="visually-hidden">Offer C deductions</caption>
-                        <thead>
-                            <tr>
-                                <th scope="col">Item</th>
-                                <th scope="col">Per paycheck</th>
-                                <th scope="col">Per year</th>
-                            </tr>
-                        </thead>
-                        <tbody id="c-rows"></tbody>
-                    </table>
-                    <ul id="c-notes" class="notes" aria-label="Offer C notes" hidden></ul>
-                </article>
-
-                <article class="offer-result" id="d-result" aria-labelledby="d-heading" hidden>
-                    <h3 id="d-heading">Offer D</h3>
-                    <p class="net">Take-home per paycheck: <strong id="d-net"></strong></p>
-                    <table>
-                        <caption class="visually-hidden">Offer D deductions</caption>
-                        <thead>
-                            <tr>
-                                <th scope="col">Item</th>
-                                <th scope="col">Per paycheck</th>
-                                <th scope="col">Per year</th>
-                            </tr>
-                        </thead>
-                        <tbody id="d-rows"></tbody>
-                    </table>
-                    <ul id="d-notes" class="notes" aria-label="Offer D notes" hidden></ul>
-                </article>
             </div>
+            <p class="note">Estimate only, not tax advice. Based on 2026 federal and New Jersey rules.</p>
+        </section>
+
+        <!-- 3 to 10 offers: ranked table, then each offer's full breakdown (closed by default). -->
+        <section id="ranked" aria-labelledby="ranked-heading" hidden>
+            <h2 id="ranked-heading">Offers ranked by take-home pay</h2>
+            <!-- Explicit roles keep this a table for screen readers when narrow screens restyle rows as cards. -->
+            <table class="ranked-table" role="table">
+                <caption class="visually-hidden">Offers from highest to lowest take-home pay per paycheck</caption>
+                <thead role="rowgroup">
+                    <tr role="row">
+                        <th scope="col" role="columnheader">Offer</th>
+                        <th scope="col" role="columnheader">Salary</th>
+                        <th scope="col" role="columnheader">401(k)</th>
+                        <th scope="col" role="columnheader">Take-home per paycheck</th>
+                        <th scope="col" role="columnheader">Take-home per year</th>
+                        <th scope="col" role="columnheader">Per paycheck vs. best</th>
+                    </tr>
+                </thead>
+                <tbody id="ranked-rows" role="rowgroup"></tbody>
+            </table>
+
+            <h3 class="breakdowns-heading">Full breakdown for each offer</h3>
+            <div id="breakdowns" class="breakdowns"></div>
             <p class="note">Estimate only, not tax advice. Based on 2026 federal and New Jersey rules.</p>
         </section>
     </main>

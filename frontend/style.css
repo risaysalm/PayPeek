@@ -34,11 +34,6 @@ body.wide {
     --page: 960px;
 }
 
-/* Compare page with 3 or 4 offers: room for them side by side. */
-body.wide.many-offers {
-    --page: 1240px;
-}
-
 /* ---- Base ---- */
 * {
     box-sizing: border-box;
@@ -424,31 +419,131 @@ legend {
     margin-top: var(--space-2);
 }
 
-/* 3 offers sit in one row from 1140px and 4 offers from 1220px (narrower and the tables
-   don't fit); 2 columns in between; stacked below 860px. */
-@media (min-width: 1140px) {
-    .offers[data-count="3"] {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+.add-offer:disabled {
+    cursor: not-allowed;
 }
 
-@media (min-width: 1220px) {
-    .offers[data-count="4"] {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+/* ---- Ranked table for 3 to 10 offers (compare page) ---- */
+.ranked-table tbody th {
+    background: none;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+/* Last row has no bottom line, including its row header. */
+.ranked-table tbody tr:last-child > * {
+    border-bottom: 0;
+}
+
+.ranked-table .num-strong {
+    font-weight: 800;
+    color: var(--navy);
+}
+
+/* Best offer row: soft teal background (text 12.2:1, "Best" 5.3:1). */
+.ranked-table tr.is-best > * {
+    background: var(--brand-soft);
+}
+
+.ranked-table .best-label {
+    font-weight: 800;
+    color: var(--brand);
+}
+
+.ranked-table td.failed {
+    text-align: left;
+    white-space: normal;
+    color: var(--error);
+    font-weight: 600;
+}
+
+.breakdowns-heading {
+    margin: var(--space-5) 0 var(--space-2);
+}
+
+.breakdown {
+    margin-bottom: var(--space-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+}
+
+.breakdown > summary {
+    padding: var(--space-3) var(--space-4);
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.breakdown[open] > summary {
+    border-bottom: 1px solid var(--line);
+}
+
+.breakdown-body {
+    padding: var(--space-3) var(--space-4) var(--space-2);
+}
+
+/* Narrow screens: each ranked row becomes a small card, with the column name
+   beside each value, so there's no sideways scrolling. */
+@media (max-width: 700px) {
+    .ranked-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
     }
 
-    /* Four narrow cards: tighter card and table so amounts fit inside the card. */
-    .offers[data-count="4"] .offer-result {
-        padding: var(--space-3);
+    .ranked-table,
+    .ranked-table tbody,
+    .ranked-table tr,
+    .ranked-table th,
+    .ranked-table td {
+        display: block;
     }
 
-    .offers[data-count="4"] table {
-        font-size: 0.8125rem;
+    .ranked-table tr {
+        border-bottom: 1px solid var(--line);
     }
 
-    .offers[data-count="4"] th,
-    .offers[data-count="4"] td {
-        padding: var(--space-2) 6px;
+    .ranked-table tbody tr:last-child {
+        border-bottom: 0;
+    }
+
+    .ranked-table tbody th {
+        padding: var(--space-3) var(--space-3) var(--space-1);
+        border-bottom: 0;
+        font-size: 1.05rem;
+    }
+
+    .ranked-table td,
+    .ranked-table td:not(:first-child) {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-3);
+        padding: 2px var(--space-3);
+        border-bottom: 0;
+        text-align: right;
+    }
+
+    .ranked-table td:last-child {
+        padding-bottom: var(--space-3);
+    }
+
+    .ranked-table td::before {
+        content: attr(data-label);
+        color: var(--muted);
+        text-align: left;
+    }
+
+    .ranked-table td.failed {
+        display: block;
+        text-align: left;
+    }
+
+    .ranked-table td.failed::before {
+        content: none;
     }
 }
 
