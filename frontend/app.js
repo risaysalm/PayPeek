@@ -1,4 +1,4 @@
-const USE_MOCK = true;                     // flip to false when the backend is running
+const USE_MOCK = false;                    // set to true to use mock-estimate.json instead of the backend
 const API_BASE = "http://localhost:8000";
 
 const LABELS = {
@@ -15,6 +15,17 @@ const LABELS = {
 const money = (n) => n.toLocaleString("en-US", { style: "currency", currency: "USD" });
 const el = (id) => document.getElementById(id);
 
+// FastAPI errors put the message in "detail": either a string or a list of {msg} objects.
+function errorMessage(data) {
+    const d = data && data.detail;
+    if (typeof d === "string" && d) return d;
+    if (Array.isArray(d)) {
+        const msgs = d.map((x) => x && x.msg).filter(Boolean);
+        if (msgs.length) return msgs.join(" ");
+    }
+    return "Something went wrong.";
+}
+
 async function getEstimate(offer) {
     if (USE_MOCK) {
         const r = await fetch("mock-estimate.json");
@@ -25,8 +36,13 @@ async function getEstimate(offer) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(offer),
     });
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.error || "Something went wrong");
+    let data = null;
+    try {
+        data = await r.json();
+    } catch {
+        // Response wasn't JSON (e.g. an HTML 500 page); errorMessage falls back below.
+    }
+    if (!r.ok || !data) throw new Error(errorMessage(data));
     return data;
 }
 
@@ -55,10 +71,11 @@ el("offer-form").addEventListener("submit", (e) => {
     e.preventDefault();
     run({
         tax_year: 2026,
-        salary: Number(el("salary").value),
+        annual_salary: Number(el("salary").value),
         pay_frequency: el("frequency").value,
         filing_status: "single",
-        traditional_401k_percent: Number(el("k401").value),
+        k401_percent: Number(el("k401").value),
+        nj_allowances: 1,
     });
 });
 
