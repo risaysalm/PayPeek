@@ -3,9 +3,6 @@
 
 const SAMPLE = { a: { salary: 70000, k401: 0 }, b: { salary: 78000, k401: 6 } };
 
-// Whole dollars for headings, e.g. "$70,000".
-const dollars = (n) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
-
 function showOffer(prefix, name, data, k401Percent) {
     el(`${prefix}-heading`).textContent =
         `${name}: ${dollars(data.annual.gross)} salary, ${k401Percent}% to 401(k)`;

@@ -16,6 +16,8 @@ const LABELS = {
 
 const money = (n) => n.toLocaleString("en-US", { style: "currency", currency: "USD" });
 const el = (id) => document.getElementById(id);
+// Whole dollars, e.g. "$70,000".
+const dollars = (n) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
 // One offer in the shape the backend's /estimate and /compare expect.
 function offerBody(salary, k401Percent) {
