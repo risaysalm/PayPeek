@@ -5,7 +5,7 @@ real take-home pay for a job offer: 2026 federal + New Jersey rules, Single
 filer, biweekly pay.
 
 ## Team and folders
-- backend/ and tests/: [partner's name] (Python, FastAPI)
+- backend/ and tests/: Risay (Python, FastAPI)
 - frontend/: Hamdaan (plain HTML, CSS, JavaScript; no frameworks, no build step)
 - Only edit your own folders unless the person asks you to change the other.
 
