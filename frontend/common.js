@@ -1,6 +1,7 @@
 // Shared by index.html (app.js) and compare.html (compare.js).
 // The backend does all tax math; these helpers only send requests and display results.
 
+// Use the local backend when the page is opened from this computer, and the deployed API on Render otherwise.
 const API_BASE = ["localhost", "127.0.0.1"].includes(location.hostname)
     ? "http://localhost:8000"
     : "https://paypeek-api.onrender.com";
