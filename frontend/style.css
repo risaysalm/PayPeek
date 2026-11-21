@@ -192,3 +192,36 @@ input[type="range"] {
     font-size: 0.85rem;
     color: #555;
 }
+
+/* ---- Explain my paycheck (index.html) ---- */
+.explain {
+    margin: 16px 0;
+}
+
+.explain-status:empty {
+    display: none;
+}
+
+.explain-box {
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.explain-source {
+    display: inline-block;
+    margin: 0 0 8px;
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    background: #eceff3;
+    border-radius: 4px;
+}
+
+.explain-text {
+    margin: 0;
+    line-height: 1.6;
+    white-space: pre-line;
+}

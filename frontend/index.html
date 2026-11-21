@@ -76,6 +76,15 @@
                 <tbody id="rows"></tbody>
             </table>
             <ul id="notes" class="notes" aria-label="Notes" hidden></ul>
+
+            <div class="explain">
+                <button type="button" id="explain-btn" aria-controls="explain-box">Explain my paycheck</button>
+                <p id="explain-status" class="explain-status" role="status"></p>
+                <div id="explain-box" class="explain-box" hidden>
+                    <p id="explain-source" class="explain-source"></p>
+                    <p id="explain-text" class="explain-text"></p>
+                </div>
+            </div>
             <p class="note">Estimate only, not tax advice. Based on 2026 federal and New Jersey rules.</p>
         </section>
     </main>

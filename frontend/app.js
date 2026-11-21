@@ -5,6 +5,8 @@ const USE_MOCK = false;                    // set to true to use mock-estimate.j
 const WHATIF_DELAY_MS = 300;               // wait this long after the last slider move before calling the API
 
 let start = null;      // { salary, k401, data } from the last form submit
+let latest = null;     // the /estimate response currently on screen
+let explainId = 0;     // only the newest explain request may update the page
 let requestId = 0;     // only the newest request may update the page
 let whatIfTimer = null;
 
@@ -17,6 +19,8 @@ async function getEstimate(offer) {
 }
 
 function show(data) {
+    latest = data;
+    clearExplanation();    // an old explanation would describe different numbers
     el("net").textContent = money(data.per_paycheck.net);
     renderRows(el("rows"), data);
     renderNotes(el("notes"), data.notes);
@@ -155,6 +159,52 @@ el("whatif-reset").addEventListener("click", () => {
     el("whatif-summary").textContent =
         `Back to your starting values: ${money(start.data.per_paycheck.net)} take-home per paycheck.`;
 });
+
+// ---- Explain my paycheck ----
+
+const EXPLAIN_LABEL = "Explain my paycheck";
+
+function clearExplanation() {
+    explainId++;
+    el("explain-box").hidden = true;
+    el("explain-text").textContent = "";
+    el("explain-source").textContent = "";
+    el("explain-status").textContent = "";
+    el("explain-btn").disabled = false;
+    el("explain-btn").textContent = EXPLAIN_LABEL;
+}
+
+async function explainPaycheck() {
+    clearExplanation();
+    const id = explainId;
+    const btn = el("explain-btn");
+    btn.disabled = true;
+    btn.textContent = "Explaining...";
+    el("explain-status").textContent = "Writing a plain-English explanation of your paycheck...";
+    try {
+        const res = await postJSON("/explain", { estimate: latest });
+        if (id !== explainId) return;          // numbers changed while we waited
+        if (typeof res.explanation !== "string" || !res.explanation.trim()) throw new Error("empty explanation");
+        // textContent only: the explanation is always shown as plain text, never as HTML.
+        el("explain-text").textContent = res.explanation;
+        el("explain-source").textContent = res.source === "ai"
+            ? "Written by AI. The numbers above come from the tax calculator."
+            : "Written from a fixed template, not AI.";
+        el("explain-box").hidden = false;
+        el("explain-status").textContent = "Explanation ready below.";
+    } catch {
+        if (id !== explainId) return;
+        el("explain-status").textContent =
+            "Sorry, we couldn't explain this paycheck right now. Your results above are unchanged. Please try again.";
+    } finally {
+        if (id === explainId) {
+            btn.disabled = false;
+            btn.textContent = EXPLAIN_LABEL;
+        }
+    }
+}
+
+el("explain-btn").addEventListener("click", explainPaycheck);
 
 // ---- Form ----
 
