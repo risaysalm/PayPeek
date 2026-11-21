@@ -2,6 +2,7 @@ import os
 
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 from .engine import Offer, estimate
 from .explain import explain
@@ -43,7 +44,6 @@ def post_compare(body: CompareIn):
 def post_explain(body: ExplainIn):
     return {"explanation": explain(body.estimate.model_dump()), "source": "template"}
 
-from fastapi.responses import RedirectResponse
 
 @app.get("/", include_in_schema=False)
 def root():
