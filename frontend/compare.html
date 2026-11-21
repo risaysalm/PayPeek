@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Compare offers - PayPeek</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="wide">
+        <h1>Compare two job offers</h1>
+        <p class="tagline">See which offer actually leaves more in your paycheck.</p>
+        <p><a href="index.html">Back to a single offer</a></p>
+
+        <form id="compare-form">
+            <div class="offers">
+                <fieldset>
+                    <legend>Offer A</legend>
+                    <label for="a-salary">Offer A annual salary ($)</label>
+                    <input id="a-salary" type="number" min="1" step="1" inputmode="numeric" required>
+
+                    <label for="a-k401">Offer A 401(k) contribution (%)</label>
+                    <input id="a-k401" type="number" min="0" max="100" step="0.5" value="0" required>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Offer B</legend>
+                    <label for="b-salary">Offer B annual salary ($)</label>
+                    <input id="b-salary" type="number" min="1" step="1" inputmode="numeric" required>
+
+                    <label for="b-k401">Offer B 401(k) contribution (%)</label>
+                    <input id="b-k401" type="number" min="0" max="100" step="0.5" value="0" required>
+                </fieldset>
+            </div>
+
+            <p class="note">Both offers use 2026 New Jersey rules, a single filer, and pay every two weeks.</p>
+
+            <div class="actions">
+                <button type="submit" id="compare-submit">Compare offers</button>
+                <button type="button" id="sample">Try sample offers</button>
+            </div>
+        </form>
+
+        <p id="error" role="alert"></p>
+
+        <!-- Always in the page so screen readers announce changes to it. -->
+        <div id="summary" class="summary" role="status" aria-live="polite"></div>
+
+        <section id="results" aria-labelledby="results-heading" hidden>
+            <h2 id="results-heading">Side by side</h2>
+            <div class="offers">
+                <article class="offer-result" aria-labelledby="a-heading">
+                    <h3 id="a-heading">Offer A</h3>
+                    <p class="net">Take-home per paycheck: <strong id="a-net"></strong></p>
+                    <table>
+                        <caption class="visually-hidden">Offer A deductions</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Per paycheck</th>
+                                <th scope="col">Per year</th>
+                            </tr>
+                        </thead>
+                        <tbody id="a-rows"></tbody>
+                    </table>
+                    <ul id="a-notes" class="notes" aria-label="Offer A notes" hidden></ul>
+                </article>
+
+                <article class="offer-result" aria-labelledby="b-heading">
+                    <h3 id="b-heading">Offer B</h3>
+                    <p class="net">Take-home per paycheck: <strong id="b-net"></strong></p>
+                    <table>
+                        <caption class="visually-hidden">Offer B deductions</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Per paycheck</th>
+                                <th scope="col">Per year</th>
+                            </tr>
+                        </thead>
+                        <tbody id="b-rows"></tbody>
+                    </table>
+                    <ul id="b-notes" class="notes" aria-label="Offer B notes" hidden></ul>
+                </article>
+            </div>
+            <p class="note">Estimate only, not tax advice. Based on 2026 federal and New Jersey rules.</p>
+        </section>
+    </main>
+    <script src="common.js"></script>
+    <script src="compare.js"></script>
+</body>
+
+</html>

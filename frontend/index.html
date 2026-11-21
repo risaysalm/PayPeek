@@ -12,10 +12,11 @@
     <main>
         <h1>PayPeek</h1>
         <p class="tagline">See what you'll actually take home.</p>
+        <p><a href="compare.html">Compare two job offers</a></p>
 
         <form id="offer-form">
             <label for="salary">Annual salary ($)</label>
-            <input id="salary" type="number" min="0" step="1000" required>
+            <input id="salary" type="number" min="0" step="1" inputmode="numeric" required>
 
             <label for="frequency">How often you're paid</label>
             <select id="frequency">
@@ -44,9 +45,11 @@
                 </thead>
                 <tbody id="rows"></tbody>
             </table>
+            <ul id="notes" class="notes" aria-label="Notes" hidden></ul>
             <p class="note">Estimate only, not tax advice. Based on 2026 federal and New Jersey rules.</p>
         </section>
     </main>
+    <script src="common.js"></script>
     <script src="app.js"></script>
 </body>
 
