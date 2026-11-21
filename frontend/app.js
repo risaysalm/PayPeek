@@ -52,15 +52,23 @@ async function run(offer) {
 
 // ---- What-if sliders ----
 
+// IRS 2026 limit on employee 401(k) contributions (elective deferrals): $24,500 (IRS Notice 2025-67).
+// Used only to set how far the 401(k) slider goes. It is not used in any tax math, which the backend does.
+const IRS_401K_EMPLOYEE_LIMIT_2026 = 24500;
+
 // Each what-if value has a slider and a number box kept in sync. The box holds the exact
-// value sent to the API (a typed $72,500 is sent as-is even though the slider moves in $1,000 steps).
+// value sent to the API: a typed $72,500 is sent as-is even though the slider moves in $1,000 steps,
+// and a value beyond the slider's range is sent as typed while the slider rests at its nearest end.
+// The boxes' own min/max in index.html match what the backend accepts.
 const WHATIF = {
     k401: { slider: "whatif-k401", box: "whatif-k401-num", text: (v) => `${v}%` },
     salary: { slider: "whatif-salary", box: "whatif-salary-num", text: (v) => dollars(v) },
 };
 const lastGood = {};   // last valid value per key, restored if a typed value is left invalid
 
-// Move the slider to v and tell screen readers the exact value; optionally update the box too.
+// Move the slider to v (the browser keeps it at its nearest end if v is out of range),
+// tell screen readers the exact value, and optionally update the box too.
+// A new salary also changes how far the 401(k) slider goes.
 function setWhatIf(key, v, updateBox) {
     const c = WHATIF[key];
     const s = el(c.slider);
@@ -68,6 +76,19 @@ function setWhatIf(key, v, updateBox) {
     s.setAttribute("aria-valuetext", c.text(v));
     if (updateBox) el(c.box).value = v;
     lastGood[key] = v;
+    if (key === "salary") setK401SliderMax(v);
+}
+
+// 401(k) slider max: the whole percent of salary where the contribution reaches the IRS limit
+// (rounded down, at least 1%, at most the backend's 100%).
+function setK401SliderMax(salary) {
+    const pct = Math.floor((IRS_401K_EMPLOYEE_LIMIT_2026 * 100) / salary);
+    const k = el(WHATIF.k401.slider);
+    k.max = Math.min(100, Math.max(1, pct));
+    el("whatif-k401-max").textContent = `${k.max}%`;
+    // Re-place the thumb from the box's exact value, since the old max may have clamped it.
+    const box = el(WHATIF.k401.box);
+    if (box.value !== "") k.value = box.value;
 }
 
 function setSlidersToStart() {
@@ -90,17 +111,7 @@ function setUpSliders() {
     el("whatif-salary-min").textContent = dollars(Number(s.min));
     el("whatif-salary-max").textContent = dollars(Number(s.max));
 
-    // 401(k): 0-15%, stretched only if the starting value was higher so Reset still works.
-    const k = el("whatif-k401");
-    k.max = Math.max(15, start.k401);
-    el("whatif-k401-max").textContent = `${k.max}%`;
-
-    // Number boxes accept the same range as their sliders.
-    for (const c of Object.values(WHATIF)) {
-        el(c.box).min = el(c.slider).min;
-        el(c.box).max = el(c.slider).max;
-    }
-
+    // 401(k) slider max is set from the salary inside setSlidersToStart (see setK401SliderMax).
     setSlidersToStart();
     el("whatif-summary").textContent = "";
     el("whatif").hidden = false;
@@ -185,7 +196,7 @@ for (const [key, c] of Object.entries(WHATIF)) {
         scheduleWhatIf();
     });
 
-    // Leaving the box with an invalid value: clamp to the slider's range, or restore the last good value.
+    // Leaving the box with an invalid value: clamp to what the backend accepts, or restore the last good value.
     box.addEventListener("change", () => {
         if (box.value !== "" && box.validity.valid) return;
         const typed = Number(box.value);

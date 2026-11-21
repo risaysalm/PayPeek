@@ -60,20 +60,22 @@
                 <div class="slider">
                     <div class="slider-label">
                         <label id="whatif-k401-label" for="whatif-k401-num">401(k) contribution (%)</label>
-                        <input id="whatif-k401-num" class="slider-num slider-num-short" type="number" min="0" max="15" step="0.5" inputmode="decimal" required>
+                        <input id="whatif-k401-num" class="slider-num slider-num-short" type="number" min="0" max="100" step="0.5" inputmode="decimal" required>
                     </div>
-                    <input id="whatif-k401" type="range" min="0" max="15" step="1" aria-labelledby="whatif-k401-label">
+                    <input id="whatif-k401" type="range" min="0" max="15" step="1" aria-labelledby="whatif-k401-label" aria-describedby="whatif-hint">
                     <div class="slider-range" aria-hidden="true"><span>0%</span><span id="whatif-k401-max">15%</span></div>
                 </div>
 
                 <div class="slider">
                     <div class="slider-label">
                         <label id="whatif-salary-label" for="whatif-salary-num">Annual salary ($)</label>
-                        <input id="whatif-salary-num" class="slider-num" type="number" step="1" inputmode="numeric" required>
+                        <input id="whatif-salary-num" class="slider-num" type="number" min="1" max="10000000" step="1" inputmode="numeric" required>
                     </div>
-                    <input id="whatif-salary" type="range" step="1000" aria-labelledby="whatif-salary-label">
+                    <input id="whatif-salary" type="range" step="1000" aria-labelledby="whatif-salary-label" aria-describedby="whatif-hint">
                     <div class="slider-range" aria-hidden="true"><span id="whatif-salary-min"></span><span id="whatif-salary-max"></span></div>
                 </div>
+
+                <p id="whatif-hint" class="note whatif-hint">Need a value outside this range? Type it in the box.</p>
 
                 <button type="button" id="whatif-reset">Reset</button>
                 <p id="whatif-summary" class="summary" role="status"></p>
