@@ -101,10 +101,22 @@ We used Claude Code to help build PayPeek.
 
 ## What's next
 
-- Weekly and monthly pay
-- More states
-- Married filers
-- AI-written explanations (Explain my paycheck uses a fixed template today)
+### Make offers more complete
+
+- **Employer 401(k) match:** show the "free money" an offer includes, since two offers with the same salary can differ by thousands per year.
+- **Health insurance and other pre-tax benefits:** subtract real premiums so take-home matches an actual pay stub.
+
+### Cover more people
+
+- **Weekly, semimonthly, and monthly pay** (today: every two weeks only).
+- **Married and head-of-household filers** (today: single only).
+- **More states**, starting with New York and Pennsylvania, so offers across state lines can be compared.
+- **Yearly tax updates** (2027 and beyond): every rate already lives in `backend/config/tax_years/`, so a new year is mostly a new config file plus tests.
+
+### Help people decide
+
+- **Pay stub check:** compare your first real pay stub with the estimate.
+- **AI-written explanations:** "Explain my paycheck" uses a fixed template today; an AI version would be checked so every dollar figure matches the engine.
 
 ## Usability testing
 
