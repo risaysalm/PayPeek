@@ -79,7 +79,7 @@ python -m pytest -q
 
 ## Team
 
-- **Hamdaan** ([@hmalik0](https://github.com/hmalik0)): frontend and design
+- **Hamdaan Malik** ([@hmalik0](https://github.com/hmalik0)): frontend and design
 - **Risay Shebeer Salam** ([@risaysalm](https://github.com/risaysalm)): backend and tax engine
 
 We used Claude Code to help build PayPeek.
