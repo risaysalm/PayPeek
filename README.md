@@ -41,6 +41,24 @@ A salary isn't what lands in your account. A $70,000 offer doesn't pay $2,692 ev
 
 More detail: [backend/README.md](backend/README.md) and [frontend/README.md](frontend/README.md).
 
+## Tech stack
+
+| Area | Tool | What it's used for |
+| --- | --- | --- |
+| Backend | Python 3.13 | Language for the tax engine and API |
+| | FastAPI | API routes: `/estimate`, `/compare`, `/explain` |
+| | Pydantic | Validates requests and shapes responses |
+| | Uvicorn | Runs the API server |
+| Testing | pytest | 30 tests for the tax engine and API, all passing |
+| | httpx | Lets FastAPI's test client call the API in tests |
+| Frontend | HTML, CSS, plain JavaScript | The two pages, with no framework and no build step |
+| | Manrope (Google Fonts) | Font for headings and numbers |
+| Hosting | Render | Runs the backend API |
+| | Netlify | Serves the frontend |
+| Tools | GitHub | Code, history and issues |
+| | Claude Code | Helped us build and test PayPeek |
+| | Canva | Made the logo |
+
 ## Scope and limits
 
 - 2026 rules, federal plus New Jersey
