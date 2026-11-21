@@ -27,7 +27,7 @@
 
         <form id="offer-form">
             <label for="salary">Annual salary ($)</label>
-            <input id="salary" type="number" min="1" step="1" inputmode="numeric" required>
+            <input id="salary" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 72000" required>
 
             <label for="frequency">How often you're paid</label>
             <select id="frequency">
@@ -35,7 +35,7 @@
             </select>
 
             <label for="k401">401(k) contribution (%)</label>
-            <input id="k401" type="number" min="0" max="100" step="1" value="0">
+            <input id="k401" type="number" min="0" max="100" step="1" value="0" placeholder="e.g. 5">
 
             <div class="actions">
                 <button type="submit">See my take-home</button>
@@ -53,24 +53,25 @@
             <p class="net">Take-home per paycheck: <strong id="net"></strong></p>
 
             <section id="whatif" class="whatif" aria-labelledby="whatif-heading" hidden>
-                <h3 id="whatif-heading">What if?</h3>
-                <p class="note">Move a slider to see how your paycheck would change. Use the arrow keys to move one step at a time.</p>
+                <h3 id="whatif-heading">Try a change</h3>
+                <p class="note">Drag a slider or type a number to see how your paycheck would change, without retyping your offer.</p>
 
+                <!-- Each slider and its number box share one visible label and stay in sync. -->
                 <div class="slider">
                     <div class="slider-label">
-                        <label for="whatif-k401">401(k) contribution</label>
-                        <output id="whatif-k401-out" for="whatif-k401"></output>
+                        <label id="whatif-k401-label" for="whatif-k401-num">401(k) contribution (%)</label>
+                        <input id="whatif-k401-num" class="slider-num slider-num-short" type="number" min="0" max="15" step="0.5" inputmode="decimal" required>
                     </div>
-                    <input id="whatif-k401" type="range" min="0" max="15" step="1">
+                    <input id="whatif-k401" type="range" min="0" max="15" step="1" aria-labelledby="whatif-k401-label">
                     <div class="slider-range" aria-hidden="true"><span>0%</span><span id="whatif-k401-max">15%</span></div>
                 </div>
 
                 <div class="slider">
                     <div class="slider-label">
-                        <label for="whatif-salary">Annual salary</label>
-                        <output id="whatif-salary-out" for="whatif-salary"></output>
+                        <label id="whatif-salary-label" for="whatif-salary-num">Annual salary ($)</label>
+                        <input id="whatif-salary-num" class="slider-num" type="number" step="1" inputmode="numeric" required>
                     </div>
-                    <input id="whatif-salary" type="range" step="1000">
+                    <input id="whatif-salary" type="range" step="1000" aria-labelledby="whatif-salary-label">
                     <div class="slider-range" aria-hidden="true"><span id="whatif-salary-min"></span><span id="whatif-salary-max"></span></div>
                 </div>
 

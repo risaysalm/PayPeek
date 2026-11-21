@@ -71,3 +71,15 @@ el("sample").addEventListener("click", () => {
     el("b-k401").value = SAMPLE.b.k401;
     el("compare-form").requestSubmit();
 });
+
+// ---- Remember values between pages (see common.js) ----
+const remembered = rememberFields(["a-salary", "a-k401", "b-salary", "b-k401"]);
+// Offer A still empty: start it from the values entered on the One offer page.
+if (el("a-salary").value === "" && remembered.saved.salary) {
+    el("a-salary").value = remembered.saved.salary;
+    if (typeof remembered.saved.k401 === "string" && remembered.saved.k401 !== "") {
+        el("a-k401").value = remembered.saved.k401;
+    }
+    remembered.save();
+}
+el("compare-form").addEventListener("submit", remembered.save);

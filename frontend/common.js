@@ -80,3 +80,39 @@ function renderNotes(ul, notes) {
     }
     ul.hidden = ul.children.length === 0;
 }
+
+// ---- Remember entered values between the One offer and Compare pages ----
+// Saved per input id in sessionStorage (this tab only). Storage can be blocked or full,
+// so every access is wrapped; the pages work the same without it.
+const STORE_KEY = "paypeek-inputs";
+
+function readSaved() {
+    try {
+        const saved = JSON.parse(sessionStorage.getItem(STORE_KEY));
+        return saved && typeof saved === "object" ? saved : {};
+    } catch {
+        return {};
+    }
+}
+
+function saveFields(ids) {
+    const saved = readSaved();
+    for (const id of ids) saved[id] = el(id).value;
+    try {
+        sessionStorage.setItem(STORE_KEY, JSON.stringify(saved));
+    } catch {
+        // Storage unavailable; nothing to remember.
+    }
+}
+
+// Fill the inputs from storage, save on every edit, and return the saved values
+// plus a save() to call after setting values from code (e.g. the sample buttons).
+function rememberFields(ids) {
+    const saved = readSaved();
+    for (const id of ids) {
+        if (typeof saved[id] === "string") el(id).value = saved[id];
+    }
+    const save = () => saveFields(ids);
+    for (const id of ids) el(id).addEventListener("input", save);
+    return { saved, save };
+}
