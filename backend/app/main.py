@@ -42,3 +42,9 @@ def post_compare(body: CompareIn):
 @app.post("/explain", response_model=ExplainOut)
 def post_explain(body: ExplainIn):
     return {"explanation": explain(body.estimate.model_dump()), "source": "template"}
+
+from fastapi.responses import RedirectResponse
+
+@app.get("/", include_in_schema=False)
+def root():
+    return RedirectResponse("/docs")
