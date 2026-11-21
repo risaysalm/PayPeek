@@ -1,0 +1,55 @@
+{
+  "tax_year": 2026,
+  "pay_periods": { "biweekly": 26 },
+
+  "federal": {
+    "method": "IRS Pub 15-T (2026) Worksheet 1A, percentage method, automated payroll, W-4 2020+",
+    "source": "https://www.irs.gov/pub/irs-pdf/p15t.pdf",
+    "line_1g_adjustment": { "single": 8600 },
+    "annual_standard_schedule": {
+      "single": [
+        { "over": 0,      "base": 0.00,      "rate": 0.00 },
+        { "over": 7500,   "base": 0.00,      "rate": 0.10 },
+        { "over": 19900,  "base": 1240.00,   "rate": 0.12 },
+        { "over": 57900,  "base": 5800.00,   "rate": 0.22 },
+        { "over": 113200, "base": 17966.00,  "rate": 0.24 },
+        { "over": 209275, "base": 41024.00,  "rate": 0.32 },
+        { "over": 263725, "base": 58448.00,  "rate": 0.35 },
+        { "over": 648100, "base": 192979.25, "rate": 0.37 }
+      ]
+    }
+  },
+
+  "fica": {
+    "source": "SSA 2026 COLA notice (Federal Register, Oct 2025); SSA 2026 fact sheet",
+    "social_security": { "rate": 0.062, "wage_base": 184500 },
+    "medicare": { "rate": 0.0145, "additional_rate": 0.009, "additional_threshold": 200000 }
+  },
+
+  "nj": {
+    "income_tax": {
+      "method": "NJ-WT percentage method, Rate Table A, annual payroll period",
+      "source": "https://www.nj.gov/treasury/taxation/pdf/current/njwt.pdf",
+      "allowance_value": 1000,
+      "excludes_401k": true,
+      "rate_tables": {
+        "A": [
+          { "over": 0,       "base": 0.00,     "rate": 0.015 },
+          { "over": 20000,   "base": 300.00,   "rate": 0.020 },
+          { "over": 35000,   "base": 600.00,   "rate": 0.039 },
+          { "over": 40000,   "base": 795.00,   "rate": 0.061 },
+          { "over": 75000,   "base": 2930.00,  "rate": 0.070 },
+          { "over": 500000,  "base": 32680.00, "rate": 0.099 },
+          { "over": 1000000, "base": 82180.00, "rate": 0.118 }
+        ]
+      }
+    },
+    "worker_contributions": {
+      "source": "https://www.nj.gov/labor/ea/employer-services/rate-info",
+      "_note": "UI and WF/SWF worker rates are set per fiscal year (Jul-Jun); confirm the Jul 2026 rate is still 0.3825% + 0.0425%.",
+      "ui_wf_swf": { "rate": 0.00425, "components": { "ui": 0.003825, "wf_swf": 0.000425 }, "wage_base": 44800 },
+      "tdi": { "rate": 0.0019, "wage_base": 171100 },
+      "fli": { "rate": 0.0023, "wage_base": 171100 }
+    }
+  }
+}
