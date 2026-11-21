@@ -1,7 +1,9 @@
 // Shared by index.html (app.js) and compare.html (compare.js).
 // The backend does all tax math; these helpers only send requests and display results.
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = ["localhost", "127.0.0.1"].includes(location.hostname)
+    ? "http://localhost:8000"
+    : "https://paypeek-api.onrender.com";
 
 const LABELS = {
     federal_income_tax: "Federal income tax",
