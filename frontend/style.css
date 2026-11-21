@@ -26,8 +26,13 @@
     --space-4: 16px;
     --space-5: 24px;
     --space-6: 32px;
-    --radius: 8px;
-    --shadow: 0 1px 2px rgba(1, 20, 44, 0.06), 0 4px 12px rgba(1, 20, 44, 0.06);   /* subtle card shadow */
+    --radius: 14px;
+    --radius-sm: 10px;          /* inputs and buttons */
+    --shadow: 0 1px 2px rgba(1, 20, 44, 0.04), 0 12px 32px -14px rgba(1, 20, 44, 0.16);   /* soft card shadow */
+    --muted-strong: #3b4757;    /* muted text that sits on the gradient: 4.8:1 on its darkest point */
+    --mint: #cdffd8;            /* logo background, left */
+    --periwinkle: #94b9ff;      /* logo background, right */
+    --font-display: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --page: 640px;
 }
 
@@ -792,4 +797,327 @@ input[type="range"] {
 
 .whatif-hint {
     margin: 0 0 var(--space-3);
+}
+
+/* ==== Look and feel ==== */
+/* Presentation only. Gradient colors are sampled from assets/logo.png. Text that can sit on the
+   gradient was checked against its darkest point (#94b9ff): navy 9.4:1, body text 7.3:1,
+   --muted-strong 4.8:1. Regular --muted (3.7:1 there) and teal text are kept off the gradient. */
+
+/* Mint-to-periwinkle backdrop behind the header and top of the page, fading into --bg. */
+body {
+    background-color: var(--bg);
+    background-image:
+        linear-gradient(to bottom, rgba(243, 247, 249, 0) 0, var(--bg) 440px),
+        linear-gradient(90deg, var(--mint), #b1dceb 50%, var(--periwinkle));
+    background-size: 100% 440px;
+    background-repeat: no-repeat;
+}
+
+/* Headings and numbers in Manrope (system fonts if it doesn't load). */
+h1,
+h2,
+h3,
+legend,
+.net strong,
+.paybar-legend strong,
+.ranked-table .num-strong,
+.slider-num,
+td:not(:first-child) {
+    font-family: var(--font-display);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    margin-top: 40px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+h3 {
+    font-weight: 700;
+}
+
+.lede,
+.site-tagline {
+    color: var(--muted-strong);
+}
+
+main {
+    padding-top: 40px;
+}
+
+/* Header sits on the gradient. */
+.site-header {
+    background: transparent;
+    border-bottom: 0;
+}
+
+.site-header-inner {
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-2);
+}
+
+.brand img {
+    box-shadow: 0 6px 18px -8px rgba(1, 20, 44, 0.35);
+}
+
+.site-nav a {
+    transition: background-color 0.15s ease;
+}
+
+.site-nav a:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.site-nav a[aria-current="page"]:hover {
+    background: var(--navy);
+    color: #fff;
+}
+
+/* Blue focus ring is too faint on the periwinkle end (2.9:1); navy is 9.4:1. */
+.site-header :focus-visible {
+    outline-color: var(--navy);
+}
+
+/* Cards: rounder, softer edge. */
+#offer-form,
+fieldset,
+.whatif,
+.paybar,
+.offer-result,
+.explain-box,
+.breakdown,
+table {
+    border-color: #dde5eb;
+}
+
+#offer-form,
+.whatif,
+.paybar {
+    padding: 28px;
+}
+
+/* Legends straddle the card edge (half on the gradient), so give them their own white pill. */
+legend {
+    padding: 2px var(--space-3);
+    border: 1px solid #dde5eb;
+    border-radius: 999px;
+    background: var(--surface);
+}
+
+/* Inputs and buttons */
+input,
+select,
+button {
+    border-radius: var(--radius-sm);
+}
+
+input:not([type="range"]):hover,
+select:hover {
+    border-color: var(--navy);
+}
+
+button {
+    padding: 11px 18px;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px -8px rgba(0, 90, 75, 0.55);
+}
+
+button:active:not(:disabled) {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Focus: the ring plus a soft halo so it reads clearly on any background. */
+:focus-visible {
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    box-shadow: 0 0 0 6px rgba(29, 95, 209, 0.15);
+}
+
+/* Hero take-home card: navy gradient with a faint leaf-teal glow (white number 13:1 or more
+   everywhere on it, mint label 8.8:1 or more). */
+.net {
+    padding: var(--space-5) 28px;
+    border-left: 0;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 100% 0%, rgba(5, 205, 178, 0.22), transparent 55%),
+        linear-gradient(135deg, var(--navy) 0%, #072340 55%, #0e3157 100%);
+    box-shadow: 0 20px 40px -22px rgba(1, 20, 44, 0.6);
+    letter-spacing: 0.01em;
+}
+
+.net strong {
+    margin-top: var(--space-2);
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+}
+
+.offer-result .net {
+    padding: var(--space-4) var(--space-5);
+}
+
+.offer-result .net strong {
+    font-size: 2.25rem;
+}
+
+/* Range sliders: slim track (4.5:1 on white) and a round teal thumb (6.0:1). */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 32px;
+    background: transparent;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--input-line);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    margin-top: -9px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: var(--brand);
+    box-shadow: 0 0 0 1px var(--brand), 0 3px 8px rgba(1, 20, 44, 0.3);
+    transition: transform 0.15s ease;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+    transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--input-line);
+}
+
+input[type="range"]::-moz-range-progress {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--brand);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: var(--brand);
+    box-shadow: 0 0 0 1px var(--brand), 0 3px 8px rgba(1, 20, 44, 0.3);
+}
+
+/* Paycheck bar: rounder track; segments ease to their new size when values change. */
+.paybar-track {
+    height: 30px;
+    border-radius: var(--radius-sm);
+}
+
+.paybar-seg {
+    transition: width 0.25s ease;
+}
+
+.breakdown > summary {
+    border-radius: var(--radius);
+    transition: background-color 0.15s ease;
+}
+
+.breakdown > summary:hover {
+    background: var(--bg);
+}
+
+/* Results fade and slide in when they appear. */
+@keyframes rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+#results:not([hidden]),
+#ranked:not([hidden]),
+.explain-box:not([hidden]) {
+    animation: rise-in 0.4s ease-out both;
+}
+
+/* Narrow screens */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    #offer-form,
+    .whatif,
+    .paybar {
+        padding: var(--space-5);
+    }
+
+    .net {
+        padding: var(--space-5);
+    }
+
+    .net strong {
+        font-size: 2.5rem;
+    }
+
+    .offer-result .net strong {
+        font-size: 2.1rem;
+    }
+}
+
+@media (max-width: 380px) {
+    #offer-form,
+    .whatif,
+    .paybar,
+    .net {
+        padding: var(--space-4);
+    }
+
+    .net strong {
+        font-size: 2.2rem;
+    }
+}
+
+/* No motion for people who ask for less. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    button:hover:not(:disabled),
+    input[type="range"]:hover::-webkit-slider-thumb {
+        transform: none;
+    }
 }
