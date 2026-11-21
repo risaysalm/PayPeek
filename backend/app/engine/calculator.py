@@ -71,7 +71,9 @@ def estimate(offer: Offer) -> dict:
     cfg = load_config(offer.tax_year)
     periods = cfg["pay_periods"][offer.pay_frequency]
     gross = Decimal(offer.annual_salary)
-    k401 = money(gross * offer.k401_percent / 100)
+    k401_limit = cfg["retirement"]["k401_employee_limit"]
+    k401_requested = money(gross * offer.k401_percent / 100)
+    k401 = min(k401_requested, k401_limit)
 
     nj_cfg = cfg["nj"]
     nj_wages = gross - k401 if nj_cfg["income_tax"]["excludes_401k"] else gross
@@ -101,6 +103,10 @@ def estimate(offer: Offer) -> dict:
             n = int((item["wage_base"] / (gross / periods)).to_integral_value(rounding="ROUND_CEILING"))
             notes.append(f"{label} stops after you've earned ${item['wage_base']:,} this year, "
                          f"around paycheck {n}. We show the yearly average per paycheck.")
+    if k401_requested > k401_limit:
+        notes.append(f"Your 401(k) was capped at ${k401_limit:,}, the most you can put in for "
+                     f"{offer.tax_year}. {offer.k401_percent}% of your salary would have been "
+                     f"${k401_requested:,}.")
     if offer.nj_allowances == 0:
         notes.append("NJ income tax assumes you haven't claimed any allowances on your NJ-W4 form. "
                      "Claiming allowances would lower it a little.")

@@ -80,6 +80,26 @@ def test_nj_tdi_fli_capped():
     assert r["annual"]["nj_fli"] == 393.53
 
 
+def test_401k_capped_at_annual_limit():
+    # 50% of 70,000 = 35,000 requested, capped at the 2026 limit of 24,500
+    r = estimate(Offer(annual_salary=D(70000), k401_percent=D(50)))
+    assert r["annual"]["pre_tax_401k"] == 24500.00
+    # federal on 70,000 - 24,500 - 8,600 = 36,900 -> 1,240 + 12% * (36,900 - 19,900) = 3,280
+    assert r["annual"]["federal_income_tax"] == 3280.00
+    assert any("capped at $24,500" in n for n in r["notes"])
+
+
+def test_401k_at_100_percent_keeps_net_positive():
+    r = estimate(Offer(annual_salary=D(70000), k401_percent=D(100)))
+    assert r["annual"]["pre_tax_401k"] == 24500.00
+    assert r["annual"]["net"] > 0
+
+
+def test_401k_below_limit_has_no_cap_note():
+    r = estimate(Offer(annual_salary=D(70000), k401_percent=D(6)))
+    assert not any("capped" in n for n in r["notes"])
+
+
 def test_nj_allowance_reduces_taxable_wages():
     # 1 allowance: 795 + 6.1% * (69,000 - 40,000) = 2,564
     assert nj_income_tax(D(70000), 1, CFG) == D("2564.000")

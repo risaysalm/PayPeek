@@ -26,6 +26,12 @@
     "medicare": { "rate": 0.0145, "additional_rate": 0.009, "additional_threshold": 200000 }
   },
 
+  "retirement": {
+    "source": "IRS Notice 2025-67 (2026 limits), IRC 402(g)",
+    "_note": "Employee elective deferral limit. Age 50+ catch-up not modeled (app targets new grads).",
+    "k401_employee_limit": 24500
+  },
+
   "nj": {
     "income_tax": {
       "method": "NJ-WT percentage method, Rate Table A, annual payroll period",
