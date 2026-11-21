@@ -5,14 +5,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Compare offers - PayPeek</title>
+    <link rel="icon" href="assets/icon.png" type="image/png">
+    <meta name="description" content="PayPeek: See your real take-home pay for a job offer.">
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-    <main class="wide">
+<body class="wide">
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="brand" href="index.html"><img src="assets/logo-header.png" alt="PayPeek: See your real take-home pay" width="216" height="72"></a>
+            <p class="site-tagline" aria-hidden="true">See your real take-home pay</p>
+            <nav class="site-nav" aria-label="Main">
+                <a href="index.html">One offer</a>
+                <a href="compare.html" aria-current="page">Compare offers</a>
+            </nav>
+        </div>
+    </header>
+    <main>
         <h1>Compare two job offers</h1>
-        <p class="tagline">See which offer actually leaves more in your paycheck.</p>
-        <p><a href="index.html">Back to a single offer</a></p>
+        <p class="lede">See which offer actually leaves more in your paycheck.</p>
 
         <form id="compare-form">
             <div class="offers">

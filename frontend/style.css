@@ -1,64 +1,96 @@
+/* PayPeek styles. Every text/background pair below meets WCAG AA (most meet AAA). */
+
+/* ---- Palette and spacing ---- */
+/* Colors come from the logo (assets/logo.png): navy #01142c, teal #01957c, leaf #05cdb2.
+   The logo teal is only 3.8:1 on white, so text and button fills use a darker teal. */
+:root {
+    --bg: #f3f7f9;
+    --surface: #ffffff;
+    --navy: #01142c;            /* headings; 17.1:1 on --bg */
+    --text: #1b2b40;            /* body text; 13.3:1 on --bg */
+    --muted: #4a5868;           /* 6.8:1 on --bg, 6.2:1 on --chip */
+    --brand: #00715e;           /* teal for text/buttons; 5.5:1 on --bg, white on it 6.0:1 */
+    --brand-strong: #005a4b;    /* hover; white on it 8.2:1 */
+    --brand-soft: #e1f5f0;      /* --brand on it 5.3:1 */
+    --accent: #01957c;          /* logo teal: borders and accents only, never text */
+    --on-navy-accent: #7fe6cf;  /* 12.4:1 on --navy */
+    --chip: #e8eef2;
+    --line: #d3dce3;
+    --input-line: #6b7886;      /* 4.5:1 on white, for form control borders */
+    --focus: #1d5fd1;           /* 5.4:1 on --bg */
+    --error: #b00020;           /* 6.8:1 on --bg */
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --radius: 8px;
+    --page: 640px;
+}
+
+body.wide {
+    --page: 960px;
+}
+
+/* ---- Base ---- */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: system-ui, sans-serif;
-    background: #f7f7f5;
-    color: #1a1a1a;
     margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    background: var(--bg);
+    color: var(--text);
 }
 
 main {
-    max-width: 640px;
+    max-width: var(--page);
     margin: 0 auto;
-    padding: 24px 16px;
+    padding: var(--space-5) var(--space-4) var(--space-6);
 }
 
-form {
-    display: grid;
-    gap: 8px;
-    margin: 16px 0;
+h1,
+h2,
+h3,
+legend {
+    color: var(--navy);
 }
 
-input,
-select,
-button {
-    font-size: 1rem;
-    padding: 10px;
+h1 {
+    margin: 0 0 var(--space-2);
+    font-size: 1.75rem;
+    line-height: 1.2;
 }
 
-button {
-    cursor: pointer;
+h2 {
+    margin: var(--space-6) 0 var(--space-3);
+    font-size: 1.35rem;
 }
 
-#error {
-    color: #b00020;
+h3 {
+    font-size: 1.1rem;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.lede {
+    margin: 0 0 var(--space-5);
+    color: var(--muted);
 }
 
-th,
-td {
-    text-align: left;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-}
-
-.net {
-    font-size: 1.4rem;
-}
-
-.note {
-    font-size: 0.85rem;
-    color: #555;
-}
-/* ---- Shared accessibility helpers ---- */
 a {
-    color: #0b57d0;
+    color: var(--brand);
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    color: var(--brand-strong);
 }
 
 :focus-visible {
-    outline: 3px solid #0b57d0;
+    outline: 3px solid var(--focus);
     outline-offset: 2px;
 }
 
@@ -74,128 +106,341 @@ a {
     border: 0;
 }
 
-/* ---- Compare page ---- */
-main.wide {
-    max-width: 960px;
+/* ---- Header ---- */
+/* White bar with the logo (which carries the tagline) and nav; wraps to two rows on phones. */
+.site-header {
+    background: var(--surface);
+    border-bottom: 3px solid var(--accent);
 }
 
-.offers {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+.site-header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-4);
+    max-width: var(--page);
+    margin: 0 auto;
+    padding: var(--space-3) var(--space-4);
 }
 
-fieldset {
-    display: grid;
-    gap: 8px;
-    min-width: 0;
+.brand {
+    display: block;
+    line-height: 0;
+    border-radius: var(--radius);
+}
+
+.brand img {
+    display: block;
+    width: auto;
+    height: 72px;
+    border-radius: var(--radius);
+}
+
+/* The logo already shows the tagline; it's only repeated as text on small screens,
+   where the logo's own tagline is too small to read. Hidden from screen readers
+   because the logo's alt text already says it. */
+.site-tagline {
+    display: none;
     margin: 0;
-    padding: 12px 16px 16px;
-    border: 1px solid #8a8a8a;
-    border-radius: 6px;
-    background: #fff;
+    color: var(--muted);
+    font-weight: 600;
 }
 
-legend {
-    font-weight: 700;
-    font-size: 1.1rem;
-    padding: 0 4px;
+.site-nav {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.site-nav a {
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    color: var(--navy);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.site-nav a:hover {
+    color: var(--navy);
+    background: var(--chip);
+    text-decoration: underline;
+}
+
+.site-nav a[aria-current="page"] {
+    background: var(--navy);
+    color: #fff;
+}
+
+/* ---- Forms ---- */
+form {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-4);
+}
+
+#offer-form,
+fieldset {
+    padding: var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+}
+
+label {
+    font-weight: 600;
+}
+
+input,
+select,
+button {
+    font: inherit;
+    font-size: 1rem;
+    padding: 10px 12px;
+    border-radius: 6px;
+}
+
+input,
+select {
+    width: 100%;
+    border: 1px solid var(--input-line);
+    background: var(--surface);
+    color: var(--text);
+}
+
+#offer-form label:not(:first-child) {
+    margin-top: var(--space-2);
 }
 
 .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+/* Secondary buttons by default; the form's submit button is the primary one. */
+button {
+    cursor: pointer;
+    border: 2px solid var(--brand);
+    background: var(--surface);
+    color: var(--brand);
+    font-weight: 600;
+}
+
+button:hover {
+    background: var(--brand-soft);
+}
+
+button[type="submit"] {
+    background: var(--brand);
+    color: #fff;
+}
+
+button[type="submit"]:hover {
+    background: var(--brand-strong);
+    border-color: var(--brand-strong);
 }
 
 button:disabled {
     cursor: wait;
+    opacity: 0.65;
 }
 
+#error {
+    color: var(--error);
+    font-weight: 600;
+}
+
+#error:empty {
+    display: none;
+}
+
+/* ---- Results ---- */
+/* Take-home: navy panel, label above a large white number (18.5:1). */
+.net {
+    margin: 0 0 var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    border-left: 6px solid var(--on-navy-accent);
+    border-radius: var(--radius);
+    background: var(--navy);
+    color: var(--on-navy-accent);
+    font-weight: 600;
+}
+
+.net strong {
+    display: block;
+    margin-top: var(--space-1);
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+    font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+    padding: var(--space-2) var(--space-3);
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+}
+
+th {
+    background: var(--chip);
+    font-size: 0.9rem;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Money columns line up on the right; amounts never break across lines. */
+th:not(:first-child),
+td:not(:first-child) {
+    text-align: right;
+}
+
+td:not(:first-child) {
+    white-space: nowrap;
+}
+
+.note {
+    font-size: 0.875rem;
+    color: var(--muted);
+}
+
+.notes {
+    margin: var(--space-3) 0;
+    padding-left: var(--space-5);
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+/* Plain-language highlight (compare summary, what-if sentence). */
 .summary {
-    margin: 16px 0;
-    padding: 12px 16px;
-    font-size: 1.15rem;
+    margin: var(--space-4) 0;
+    padding: var(--space-3) var(--space-4);
+    border-left: 6px solid var(--brand);
+    border-radius: var(--radius);
+    background: var(--brand-soft);
+    color: var(--text);
+    font-size: 1.1rem;
     line-height: 1.5;
-    background: #e7f4ea;
-    border-left: 6px solid #1e7d3a;
-    color: #1a1a1a;
 }
 
 .summary:empty {
     display: none;
 }
 
+/* ---- Compare page ---- */
+.offers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+fieldset {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+    margin: 0;
+}
+
+legend {
+    padding: 0 var(--space-1);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--brand);
+}
+
 .offer-result {
     min-width: 0;
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background: #fff;
+    padding: var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
 }
 
 .offer-result h3 {
-    margin-top: 0;
+    margin: 0 0 var(--space-3);
 }
 
-.notes {
-    font-size: 0.9rem;
-    color: #444;
-    padding-left: 20px;
+.offer-result .net {
+    padding: var(--space-3) var(--space-4);
 }
 
-@media (max-width: 720px) {
-    .offers {
-        grid-template-columns: 1fr;
-    }
+.offer-result .net strong {
+    font-size: 2rem;
 }
 
 /* ---- What-if sliders (index.html) ---- */
 .whatif {
-    margin: 16px 0;
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background: #fff;
+    margin: var(--space-4) 0 var(--space-5);
+    padding: var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
 }
 
 .whatif h3 {
-    margin: 0 0 4px;
+    margin: 0 0 var(--space-1);
+}
+
+.whatif .note {
+    margin-top: 0;
 }
 
 .slider {
-    margin: 16px 0;
+    margin: var(--space-4) 0;
 }
 
 .slider-label {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 4px 12px;
+    gap: var(--space-1) var(--space-3);
 }
 
 .slider-label output {
-    font-weight: 700;
+    font-weight: 800;
+    color: var(--brand);
+    font-variant-numeric: tabular-nums;
 }
 
 input[type="range"] {
-    width: 100%;
     height: 32px;
-    margin: 4px 0 0;
+    margin: var(--space-1) 0 0;
     padding: 0;
-    accent-color: #0b57d0;
+    border: 0;
+    background: transparent;
+    accent-color: var(--brand);
 }
 
 .slider-range {
     display: flex;
     justify-content: space-between;
     font-size: 0.85rem;
-    color: #555;
+    color: var(--muted);
 }
 
 /* ---- Explain my paycheck (index.html) ---- */
 .explain {
-    margin: 16px 0;
+    margin: var(--space-5) 0 var(--space-4);
+}
+
+.explain-status {
+    color: var(--muted);
 }
 
 .explain-status:empty {
@@ -203,25 +448,83 @@ input[type="range"] {
 }
 
 .explain-box {
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background: #fff;
+    margin-top: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
 }
 
 .explain-source {
     display: inline-block;
-    margin: 0 0 8px;
-    padding: 2px 8px;
+    margin: 0 0 var(--space-2);
+    padding: 2px var(--space-2);
+    border-radius: 4px;
+    background: var(--chip);
+    color: var(--text);
     font-size: 0.85rem;
     font-weight: 700;
-    color: #1a1a1a;
-    background: #eceff3;
-    border-radius: 4px;
 }
 
 .explain-text {
     margin: 0;
     line-height: 1.6;
     white-space: pre-line;
+}
+
+/* ---- Narrow screens ---- */
+/* Two money tables side by side need room; stack them below this width. */
+@media (max-width: 860px) {
+    .offers {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand img {
+        height: 60px;
+    }
+
+    .site-tagline {
+        display: block;
+        flex-basis: 100%;
+        margin-top: calc(-1 * var(--space-2));
+    }
+
+    .site-nav a {
+        padding: var(--space-2) var(--space-3);
+    }
+
+    .net strong {
+        font-size: 2.1rem;
+    }
+
+    th,
+    td {
+        padding: var(--space-2);
+    }
+}
+
+/* Very small phones (e.g. 320px): tighten tables so amounts still fit. */
+@media (max-width: 380px) {
+    main {
+        padding-left: var(--space-3);
+        padding-right: var(--space-3);
+    }
+
+    .offer-result,
+    .whatif,
+    #offer-form,
+    fieldset {
+        padding: var(--space-3);
+    }
+
+    table {
+        font-size: 0.875rem;
+    }
+
+    th,
+    td {
+        padding: var(--space-2) 6px;
+    }
 }

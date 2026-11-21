@@ -4,15 +4,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PayPeek</title>
+    <title>PayPeek: See your real take-home pay</title>
+    <link rel="icon" href="assets/icon.png" type="image/png">
+    <meta name="description" content="PayPeek: See your real take-home pay for a job offer.">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="brand" href="index.html"><img src="assets/logo-header.png" alt="PayPeek: See your real take-home pay" width="216" height="72"></a>
+            <p class="site-tagline" aria-hidden="true">See your real take-home pay</p>
+            <nav class="site-nav" aria-label="Main">
+                <a href="index.html" aria-current="page">One offer</a>
+                <a href="compare.html">Compare offers</a>
+            </nav>
+        </div>
+    </header>
     <main>
-        <h1>PayPeek</h1>
-        <p class="tagline">See what you'll actually take home.</p>
-        <p><a href="compare.html">Compare two job offers</a></p>
+        <h1>Check a job offer</h1>
+        <p class="lede">Enter a salary to see your take-home pay and every tax and deduction on each paycheck.</p>
 
         <form id="offer-form">
             <label for="salary">Annual salary ($)</label>
@@ -26,8 +37,10 @@
             <label for="k401">401(k) contribution (%)</label>
             <input id="k401" type="number" min="0" max="100" step="1" value="0">
 
-            <button type="submit">See my take-home</button>
-            <button type="button" id="sample">Try a sample offer</button>
+            <div class="actions">
+                <button type="submit">See my take-home</button>
+                <button type="button" id="sample">Try a sample offer</button>
+            </div>
         </form>
 
         <p id="error" role="alert"></p>
