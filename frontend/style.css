@@ -34,9 +34,19 @@ body.wide {
     --page: 960px;
 }
 
+/* Compare page with 3 or 4 offers: room for them side by side. */
+body.wide.many-offers {
+    --page: 1240px;
+}
+
 /* ---- Base ---- */
 * {
     box-sizing: border-box;
+}
+
+/* `hidden` always hides, even on elements given a display (e.g. fieldset is a grid). */
+[hidden] {
+    display: none !important;
 }
 
 body {
@@ -372,6 +382,7 @@ td:not(:first-child) {
 fieldset {
     display: grid;
     gap: var(--space-2);
+    align-content: start;   /* don't stretch rows when a neighbour card is taller */
     min-width: 0;
     margin: 0;
 }
@@ -401,6 +412,44 @@ legend {
 
 .offer-result .net strong {
     font-size: 2rem;
+}
+
+/* Add/remove offers (compare page). Buttons keep their own width inside the grid form. */
+.add-offer,
+.remove-offer {
+    justify-self: start;
+}
+
+.remove-offer {
+    margin-top: var(--space-2);
+}
+
+/* 3 offers sit in one row from 1140px and 4 offers from 1220px (narrower and the tables
+   don't fit); 2 columns in between; stacked below 860px. */
+@media (min-width: 1140px) {
+    .offers[data-count="3"] {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1220px) {
+    .offers[data-count="4"] {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    /* Four narrow cards: tighter card and table so amounts fit inside the card. */
+    .offers[data-count="4"] .offer-result {
+        padding: var(--space-3);
+    }
+
+    .offers[data-count="4"] table {
+        font-size: 0.8125rem;
+    }
+
+    .offers[data-count="4"] th,
+    .offers[data-count="4"] td {
+        padding: var(--space-2) 6px;
+    }
 }
 
 /* ---- What-if sliders (index.html) ---- */

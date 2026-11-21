@@ -22,11 +22,12 @@
         </div>
     </header>
     <main>
-        <h1>Compare two job offers</h1>
-        <p class="lede">See which offer actually leaves more in your paycheck.</p>
+        <h1>Compare job offers</h1>
+        <p class="lede">See which offer actually leaves more in your paycheck. Start with two, and add up to four.</p>
 
         <form id="compare-form">
-            <div class="offers">
+            <!-- Offers C and D stay hidden and disabled (so they skip validation) until added. -->
+            <div class="offers" id="offer-inputs" data-count="2">
                 <fieldset>
                     <legend>Offer A</legend>
                     <label for="a-salary">Offer A annual salary ($)</label>
@@ -44,9 +45,35 @@
                     <label for="b-k401">Offer B 401(k) contribution (%)</label>
                     <input id="b-k401" type="number" min="0" max="100" step="0.5" value="0" placeholder="e.g. 5" required>
                 </fieldset>
+
+                <fieldset id="c-fieldset" hidden disabled>
+                    <legend>Offer C</legend>
+                    <label for="c-salary">Offer C annual salary ($)</label>
+                    <input id="c-salary" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 72000" required>
+
+                    <label for="c-k401">Offer C 401(k) contribution (%)</label>
+                    <input id="c-k401" type="number" min="0" max="100" step="0.5" value="0" placeholder="e.g. 5" required>
+                    <button type="button" class="remove-offer" data-offer="c">Remove<span class="visually-hidden"> Offer C</span></button>
+                </fieldset>
+
+                <fieldset id="d-fieldset" hidden disabled>
+                    <legend>Offer D</legend>
+                    <label for="d-salary">Offer D annual salary ($)</label>
+                    <input id="d-salary" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 72000" required>
+
+                    <label for="d-k401">Offer D 401(k) contribution (%)</label>
+                    <input id="d-k401" type="number" min="0" max="100" step="0.5" value="0" placeholder="e.g. 5" required>
+                    <button type="button" class="remove-offer" data-offer="d">Remove<span class="visually-hidden"> Offer D</span></button>
+                </fieldset>
             </div>
 
-            <p class="note">Both offers use 2026 New Jersey rules, a single filer, and pay every two weeks.</p>
+            <!-- Remembered with the other values (common.js), so the number of offers survives page switches. -->
+            <input type="hidden" id="offer-count" value="2">
+            <button type="button" id="add-offer" class="add-offer">Add another offer</button>
+            <p id="offer-limit" class="note" hidden>You can compare up to 4 offers.</p>
+            <p id="offer-status" class="visually-hidden" role="status"></p>
+
+            <p class="note">All offers use 2026 New Jersey rules, a single filer, and pay every two weeks.</p>
 
             <div class="actions">
                 <button type="submit" id="compare-submit">Compare offers</button>
@@ -61,8 +88,8 @@
 
         <section id="results" aria-labelledby="results-heading" hidden>
             <h2 id="results-heading">Side by side</h2>
-            <div class="offers">
-                <article class="offer-result" aria-labelledby="a-heading">
+            <div class="offers" id="offer-results" data-count="2">
+                <article class="offer-result" id="a-result" aria-labelledby="a-heading">
                     <h3 id="a-heading">Offer A</h3>
                     <p class="net">Take-home per paycheck: <strong id="a-net"></strong></p>
                     <table>
@@ -79,7 +106,7 @@
                     <ul id="a-notes" class="notes" aria-label="Offer A notes" hidden></ul>
                 </article>
 
-                <article class="offer-result" aria-labelledby="b-heading">
+                <article class="offer-result" id="b-result" aria-labelledby="b-heading">
                     <h3 id="b-heading">Offer B</h3>
                     <p class="net">Take-home per paycheck: <strong id="b-net"></strong></p>
                     <table>
@@ -94,6 +121,40 @@
                         <tbody id="b-rows"></tbody>
                     </table>
                     <ul id="b-notes" class="notes" aria-label="Offer B notes" hidden></ul>
+                </article>
+
+                <article class="offer-result" id="c-result" aria-labelledby="c-heading" hidden>
+                    <h3 id="c-heading">Offer C</h3>
+                    <p class="net">Take-home per paycheck: <strong id="c-net"></strong></p>
+                    <table>
+                        <caption class="visually-hidden">Offer C deductions</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Per paycheck</th>
+                                <th scope="col">Per year</th>
+                            </tr>
+                        </thead>
+                        <tbody id="c-rows"></tbody>
+                    </table>
+                    <ul id="c-notes" class="notes" aria-label="Offer C notes" hidden></ul>
+                </article>
+
+                <article class="offer-result" id="d-result" aria-labelledby="d-heading" hidden>
+                    <h3 id="d-heading">Offer D</h3>
+                    <p class="net">Take-home per paycheck: <strong id="d-net"></strong></p>
+                    <table>
+                        <caption class="visually-hidden">Offer D deductions</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Per paycheck</th>
+                                <th scope="col">Per year</th>
+                            </tr>
+                        </thead>
+                        <tbody id="d-rows"></tbody>
+                    </table>
+                    <ul id="d-notes" class="notes" aria-label="Offer D notes" hidden></ul>
                 </article>
             </div>
             <p class="note">Estimate only, not tax advice. Based on 2026 federal and New Jersey rules.</p>
