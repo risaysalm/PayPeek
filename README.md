@@ -43,6 +43,9 @@ A salary isn't what lands in your account. A $70,000 offer doesn't pay $2,692 ev
 
 - 2026 rules, federal plus New Jersey
 - Single filers, paid every two weeks
+- Assumes 1 New Jersey allowance on your NJ-W4
+- 401(k) contributions are capped at the 2026 limit of $24,500; the app tells you when that happens
+- Health insurance and other payroll deductions aren't included, so a real paystub may show less
 - Estimates only, not tax advice
 
 ## Privacy
@@ -76,6 +79,16 @@ When the page is opened from `localhost` or `127.0.0.1`, it calls the local back
 ```
 python -m pytest -q
 ```
+
+**On Windows (PowerShell):** Windows blocks `Activate.ps1` by default, so skip activation and call the virtual environment's Python directly. Create it once from the project root with `python -m venv .venv`, then from `backend/`:
+
+```powershell
+..\.venv\Scripts\python -m pip install -r requirements.txt
+..\.venv\Scripts\python -m uvicorn app.main:app --reload
+..\.venv\Scripts\python -m pytest -q
+```
+
+For the frontend, use `python -m http.server 5500` instead of `python3`.
 
 ## Team
 
