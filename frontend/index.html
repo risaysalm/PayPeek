@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PayPeek</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main>
+        <h1>PayPeek</h1>
+        <p class="tagline">See what you'll actually take home.</p>
+
+        <form id="offer-form">
+            <label for="salary">Annual salary ($)</label>
+            <input id="salary" type="number" min="0" step="1000" required>
+
+            <label for="frequency">How often you're paid</label>
+            <select id="frequency">
+                <option value="biweekly">Every two weeks</option>
+            </select>
+
+            <label for="k401">401(k) contribution (%)</label>
+            <input id="k401" type="number" min="0" max="100" step="1" value="0">
+
+            <button type="submit">See my take-home</button>
+            <button type="button" id="sample">Try a sample offer</button>
+        </form>
+
+        <p id="error" role="alert"></p>
+
+        <section id="results" aria-live="polite" hidden>
+            <h2>Your paycheck</h2>
+            <p class="net">Take-home per paycheck: <strong id="net"></strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Per paycheck</th>
+                        <th>Per year</th>
+                    </tr>
+                </thead>
+                <tbody id="rows"></tbody>
+            </table>
+            <p class="note">Estimate only, not tax advice. Based on 2026 federal and New Jersey rules.</p>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+
+</html>
