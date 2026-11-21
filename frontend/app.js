@@ -52,20 +52,33 @@ async function run(offer) {
 
 // ---- What-if sliders ----
 
-function updateSliderLabels() {
-    const k = el("whatif-k401");
-    const s = el("whatif-salary");
-    el("whatif-k401-out").textContent = `${k.value}%`;
-    k.setAttribute("aria-valuetext", `${k.value}%`);
-    el("whatif-salary-out").textContent = dollars(Number(s.value));
-    s.setAttribute("aria-valuetext", dollars(Number(s.value)));
+// Each what-if value has a slider and a number box kept in sync. The box holds the exact
+// value sent to the API (a typed $72,500 is sent as-is even though the slider moves in $1,000 steps).
+const WHATIF = {
+    k401: { slider: "whatif-k401", box: "whatif-k401-num", text: (v) => `${v}%` },
+    salary: { slider: "whatif-salary", box: "whatif-salary-num", text: (v) => dollars(v) },
+};
+const lastGood = {};   // last valid value per key, restored if a typed value is left invalid
+
+// Move the slider to v and tell screen readers the exact value; optionally update the box too.
+function setWhatIf(key, v, updateBox) {
+    const c = WHATIF[key];
+    const s = el(c.slider);
+    s.value = v;
+    s.setAttribute("aria-valuetext", c.text(v));
+    if (updateBox) el(c.box).value = v;
+    lastGood[key] = v;
 }
 
 function setSlidersToStart() {
-    el("whatif-k401").value = start.k401;
-    el("whatif-salary").value = start.salary;
-    updateSliderLabels();
+    setWhatIf("k401", start.k401, true);
+    setWhatIf("salary", start.salary, true);
 }
+
+const whatIfValues = () => ({
+    salary: Number(el(WHATIF.salary.box).value),
+    k401: Number(el(WHATIF.k401.box).value),
+});
 
 function setUpSliders() {
     // Salary: $1,000 steps on either side of the entered salary, staying within 50%-150% of it.
@@ -81,6 +94,12 @@ function setUpSliders() {
     const k = el("whatif-k401");
     k.max = Math.max(15, start.k401);
     el("whatif-k401-max").textContent = `${k.max}%`;
+
+    // Number boxes accept the same range as their sliders.
+    for (const c of Object.values(WHATIF)) {
+        el(c.box).min = el(c.slider).min;
+        el(c.box).max = el(c.slider).max;
+    }
 
     setSlidersToStart();
     el("whatif-summary").textContent = "";
@@ -130,7 +149,7 @@ function whatIfSentence(now, data) {
 
 async function runWhatIf() {
     const id = ++requestId;
-    const now = { salary: Number(el("whatif-salary").value), k401: Number(el("whatif-k401").value) };
+    const now = whatIfValues();
     el("error").textContent = "";
     try {
         const data = await getEstimate(offerBody(now.salary, now.k401));
@@ -142,14 +161,42 @@ async function runWhatIf() {
     }
 }
 
-function onSliderInput() {
-    updateSliderLabels();
+function scheduleWhatIf() {
     cancelWhatIf();
     whatIfTimer = setTimeout(runWhatIf, WHATIF_DELAY_MS);
 }
 
-el("whatif-k401").addEventListener("input", onSliderInput);
-el("whatif-salary").addEventListener("input", onSliderInput);
+for (const [key, c] of Object.entries(WHATIF)) {
+    const box = el(c.box);
+
+    // Slider moved: copy its value into the box.
+    el(c.slider).addEventListener("input", (e) => {
+        setWhatIf(key, Number(e.target.value), true);
+        scheduleWhatIf();
+    });
+
+    // Typing: only valid, in-range numbers update the slider and the paycheck.
+    box.addEventListener("input", () => {
+        if (box.value === "" || !box.validity.valid) {
+            cancelWhatIf();        // don't send a half-typed number
+            return;
+        }
+        setWhatIf(key, Number(box.value), false);
+        scheduleWhatIf();
+    });
+
+    // Leaving the box with an invalid value: clamp to the slider's range, or restore the last good value.
+    box.addEventListener("change", () => {
+        if (box.value !== "" && box.validity.valid) return;
+        const typed = Number(box.value);
+        const min = Number(box.min);
+        const max = Number(box.max);
+        const v = box.value === "" || Number.isNaN(typed) ? lastGood[key]
+            : Math.min(max, Math.max(min, key === "salary" ? Math.round(typed) : Math.round(typed * 2) / 2));
+        setWhatIf(key, v, true);
+        scheduleWhatIf();
+    });
+}
 
 el("whatif-reset").addEventListener("click", () => {
     cancelWhatIf();
@@ -218,3 +265,7 @@ el("sample").addEventListener("click", () => {
     el("k401").value = 0;
     el("offer-form").requestSubmit();
 });
+
+// ---- Remember values between pages (see common.js) ----
+const remembered = rememberFields(["salary", "k401"]);
+el("offer-form").addEventListener("submit", remembered.save);

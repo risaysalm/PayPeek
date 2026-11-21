@@ -207,6 +207,25 @@ select {
     color: var(--text);
 }
 
+/* No spinner arrows on number boxes: people type salaries, and the arrows are tiny targets.
+   Arrow keys still step the value. */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Example values like "e.g. 72000"; --muted is 7.3:1 on white (browser default grey is borderline). */
+::placeholder {
+    color: var(--muted);
+    opacity: 1;
+}
+
 #offer-form label:not(:first-child) {
     margin-top: var(--space-2);
 }
@@ -408,14 +427,28 @@ legend {
 .slider-label {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
-    gap: var(--space-1) var(--space-3);
+    gap: var(--space-2) var(--space-3);
 }
 
-.slider-label output {
-    font-weight: 800;
+/* Number box beside each slider, for typing an exact value. */
+.slider-num {
+    width: 8.5rem;
+    padding: 6px 10px;
+    text-align: right;
+    font-weight: 700;
     color: var(--brand);
     font-variant-numeric: tabular-nums;
+}
+
+.slider-num-short {
+    width: 5.5rem;
+}
+
+.slider-num:invalid {
+    border-color: var(--error);
+    border-width: 2px;
 }
 
 input[type="range"] {
