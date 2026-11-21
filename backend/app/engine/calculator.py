@@ -92,14 +92,18 @@ def estimate(offer: Offer) -> dict:
     per_paycheck = {k: money(v / periods) for k, v in annual.items()}
 
     notes = []
-    for key, item, label in [("nj_ui_wf", wc["ui_wf_swf"], "NJ UI/WF/SWF"),
-                             ("social_security", cfg["fica"]["social_security"], "Social Security")]:
+    caps = [
+        (wc["ui_wf_swf"], "One NJ deduction (unemployment and workforce)"),
+        (cfg["fica"]["social_security"], "Social Security tax"),
+    ]
+    for item, label in caps:
         if gross > item["wage_base"]:
             n = int((item["wage_base"] / (gross / periods)).to_integral_value(rounding="ROUND_CEILING"))
-            notes.append(f"{label} stops once year-to-date wages reach ${item['wage_base']:,}"
-                         f" (around paycheck {n} of {periods}); per-paycheck figure is the yearly average.")
+            notes.append(f"{label} stops after you've earned ${item['wage_base']:,} this year, "
+                         f"around paycheck {n}. We show the yearly average per paycheck.")
     if offer.nj_allowances == 0:
-        notes.append("NJ withholding assumes Rate A with 0 allowances (no NJ-W4 on file).")
+        notes.append("NJ income tax assumes you haven't claimed any allowances on your NJ-W4 form. "
+                     "Claiming allowances would lower it a little.")
 
     return {
         "tax_year": offer.tax_year,

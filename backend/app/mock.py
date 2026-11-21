@@ -15,7 +15,7 @@ MOCK_ESTIMATE = {
     },
     "notes": [
         "MOCK DATA - not calculated from your input.",
-        "NJ UI/WF/SWF stops once year-to-date wages reach $44,800 (around paycheck 17 of 26); "
-        "per-paycheck figure is the yearly average.",
+        "One NJ deduction (unemployment and workforce) stops after you've earned $44,800 this year, "
+        "around paycheck 17. We show the yearly average per paycheck.",
     ],
 }

@@ -71,7 +71,7 @@ def test_federal_zero_below_threshold():
 def test_social_security_capped_at_wage_base():
     r = estimate(Offer(annual_salary=D(200000)))
     assert r["annual"]["social_security"] == 11439.00          # 6.2% * 184,500
-    assert any("Social Security stops" in n for n in r["notes"])
+    assert any("Social Security tax stops" in n for n in r["notes"])
 
 
 def test_nj_tdi_fli_capped():
