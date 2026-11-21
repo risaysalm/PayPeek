@@ -33,7 +33,7 @@ Its numbers are test case 1, and `test_api.py` checks that they still match the 
 
 ## Request
 ```json
-{ "annual_salary": 70000, "k401_percent": 6, "nj_allowances": 0, "label": "Acme" }
+{ "annual_salary": 70000, "k401_percent": 6, "nj_allowances": 1, "label": "Acme" }
 ```
 `/compare` takes `{"offer_a": {...}, "offer_b": {...}}`. `/explain` takes `{"estimate": <an /estimate response>}`.
 
@@ -42,5 +42,5 @@ Its numbers are test case 1, and `test_api.py` checks that they still match the 
 - Capped items (NJ UI/WF/SWF at $44,800, SS at $184,500) are shown as a yearly average per paycheck.
   A note tells the user when the deduction actually stops.
 - A pre-tax 401(k) lowers federal and NJ income tax but not FICA or NJ UI/TDI/FLI.
-- NJ defaults to Rate A with 0 allowances (what an employer does without an NJ-W4).
+- NJ defaults to Rate A with 1 allowance (the API default, matching the frontend). Pass `nj_allowances: 0` for the no-NJ-W4 case.
 - Out of scope: Step 2/3/4 W-4 entries, other states and cities, bonuses, benefits premiums.

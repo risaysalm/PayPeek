@@ -40,4 +40,4 @@ def test_compare_difference():
 def test_explain_uses_engine_numbers():
     est = client.post("/estimate", json={"annual_salary": 70000}).json()
     text = client.post("/explain", json={"estimate": est}).json()["explanation"]
-    assert "$2,114.06" in text
+    assert "$2,116.41" in text

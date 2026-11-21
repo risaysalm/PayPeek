@@ -9,7 +9,7 @@ LineItems = dict[str, float]
 class OfferIn(BaseModel):
     annual_salary: Decimal = Field(gt=0, le=10_000_000, examples=[70000])
     k401_percent: Decimal = Field(default=Decimal(0), ge=0, le=100, examples=[6])
-    nj_allowances: int = Field(default=0, ge=0, le=99)
+    nj_allowances: int = Field(default=1, ge=0, le=99)  # matches the frontend
     label: str | None = Field(default=None, examples=["Acme Corp"])
     # Fixed scope for the hackathon; present so the contract can grow later.
     tax_year: Literal[2026] = 2026
